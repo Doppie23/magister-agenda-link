@@ -1,7 +1,9 @@
-link = r'https://calendar.magister.net/api/icalendar/feeds/5bd9ac88-6e89-428c-9870-233085ef6636'
+from ics import Calendar
+from urllib.request import urlopen
 
-import requests
+url = r'https://calendar.magister.net/api/icalendar/feeds/2187c94f-24b9-46c8-83b1-822d6af3ba27'
+c = Calendar(urlopen(url).read().decode('utf-8'))
 
-text = requests.get(link).text
+print(c)
 
-print(text)
+print(c.events)

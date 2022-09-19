@@ -8,12 +8,13 @@ from datetime import date
 url = os.environ.get('link')
 c = Calendar(urlopen(url).read().decode('utf-8'))
 e = list(c.timeline)
-vandaag = date.today()
+vandaag = str(date.today())
 
 print(vandaag)
 
-print(e[0].name)
-print(e[0]._begin)
-
-print(e[4].name)
-print(e[4]._begin)
+for x in e:
+    if vandaag in str(x._begin):
+        print(x.name)
+        print(x._begin)
+    else:
+        continue

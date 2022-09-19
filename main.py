@@ -1,9 +1,11 @@
 from ics import Calendar
 from urllib.request import urlopen
+from dotenv import load_dotenv
+load_dotenv()
+import os
 
-url = r'https://calendar.magister.net/api/icalendar/feeds/2187c94f-24b9-46c8-83b1-822d6af3ba27'
+url = os.environ.get('link')
 c = Calendar(urlopen(url).read().decode('utf-8'))
+e = list(c.timeline)
 
-print(c)
-
-print(c.events)
+print(e[0]._begin)

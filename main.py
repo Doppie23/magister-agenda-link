@@ -23,6 +23,12 @@ class magisteragenda():
         return dag
 
     def rooster(self, dagenverschil=None):
+        """
+        Kan voor dagenverschil hier niks invullen of 1, 2, 3 etc. \n
+        Dan krijg je de volgende dag,
+        dus 1 zou morgen geven en 2 overmorgen enzovoort. \n
+        0 doet hetzelfde als niks invullen.
+        """
         rooster = ''
         dag = magisteragenda.anderedag(self, dagenverschil)
         for x in self.e:

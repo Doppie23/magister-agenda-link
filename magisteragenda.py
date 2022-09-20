@@ -1,28 +1,24 @@
 from ics import Calendar
 from urllib.request import urlopen
-from dotenv import load_dotenv
-load_dotenv()
-import os
 from datetime import date, timedelta, datetime
 
 class magisteragenda():
-    def __init__(self):
-        url = os.environ.get('link')
+    def __init__(self, link):
+        url = link
         self.c = Calendar(urlopen(url).read().decode('utf-8'))
         self.e = list(self.c.timeline)
         self.vandaag = str(date.today())
 
-    def anderedag(self, dagenverschil=None):
-        self.dagenverschil = dagenverschil
+    def __anderedag(self, dagenverschil):
         vandaag = self.vandaag
-        if self.dagenverschil == None or 0:
+        if dagenverschil == 0:
             dag = vandaag
         else:
-            vandaag = datetime.strptime(vandaag, "%Y-%M-%d") + timedelta(days=self.dagenverschil)
+            vandaag = datetime.strptime(vandaag, "%Y-%M-%d") + timedelta(days=dagenverschil)
             dag = vandaag.strftime("%Y-%M-%d")
         return dag
 
-    def rooster(self, dagenverschil=None):
+    def rooster(self, dagenverschil=0):
         """
         Kan voor dagenverschil hier niks invullen of 1, 2, 3 etc. \n
         Dan krijg je de volgende dag,
@@ -30,7 +26,7 @@ class magisteragenda():
         0 doet hetzelfde als niks invullen.
         """
         rooster = ''
-        dag = magisteragenda.anderedag(self, dagenverschil)
+        dag = magisteragenda.__anderedag(self, dagenverschil)
         for x in self.e:
             if dag in str(x._begin):
                 rooster += str(x.name) + '\n'
@@ -47,6 +43,10 @@ class magisteragenda():
         return rooster
 
     def tijd_eerste_uur(self):
+        """
+        Geeft tijd van het eerste uur van de dag. \n
+        Kan handig zijn voor automatische wekker.
+        """
         eersteuur = None
         i = 0
         for x in self.e:
@@ -61,9 +61,3 @@ class magisteragenda():
             else:
                 continue
         return eersteuur
-
-agenda = magisteragenda()
-rooster = agenda.rooster() # kan tussen haakjes 1 zetten voor volgende dag en 2 voor dag erna etc...
-print(rooster)
-eersteuur = agenda.tijd_eerste_uur()
-print(eersteuur)

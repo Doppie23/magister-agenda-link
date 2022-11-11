@@ -18,7 +18,7 @@ class magisteragenda():
             dag = vandaag.strftime("%Y-%M-%d")
         return dag
 
-    def rooster(self, dagenverschil=0, tijdinrooster=True):
+    def rooster(self, dagenverschil=0, tijd=True):
         """
         Kan voor dagenverschil hier niks invullen of 1, 2, 3 etc. \n
         Dan krijg je de volgende dag,
@@ -36,9 +36,9 @@ class magisteragenda():
                 tijd, _ = tijd
                 tijdzone_correctie = datetime.strptime(tijd, "%H:%M:%S") + timedelta(hours=2)
                 tijd = tijdzone_correctie.strftime("%H:%M:%S")
-                if tijdinrooster == True:
+                if tijd == True:
                     rooster += str(tijd) + '\n'
-                elif tijdinrooster == False:
+                elif tijd == False:
                     rooster += '\n'
             else:
                 continue

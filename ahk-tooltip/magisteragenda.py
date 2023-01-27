@@ -3,11 +3,15 @@ from urllib.request import urlopen
 from datetime import date, timedelta, datetime
 
 class magisteragenda():
-    def __init__(self, link):
+    def __init__(self, link, zomertijd: bool):
         url = link
         self.c = Calendar(urlopen(url).read().decode('utf-8'))
         self.e = list(self.c.timeline)
         self.vandaag = str(date.today())
+        if zomertijd == True:
+            self.tijdcorrectie = 2
+        elif zomertijd == False:
+            self.tijdcorrectie = 1
 
     def __anderedag(self, dagenverschil):
         vandaag = self.vandaag
@@ -18,7 +22,7 @@ class magisteragenda():
             dag = vandaag.strftime("%Y-%M-%d")
         return dag
 
-    def rooster(self, dagenverschil=0, tijd=True):
+    def rooster(self, dagenverschil=0, tijdinrooster=True):
         """
         Kan voor dagenverschil hier niks invullen of 1, 2, 3 etc. \n
         Dan krijg je de volgende dag,
@@ -34,11 +38,11 @@ class magisteragenda():
                 datum, tijd = datumtijd
                 tijd = str(tijd).split('+')
                 tijd, _ = tijd
-                tijdzone_correctie = datetime.strptime(tijd, "%H:%M:%S") + timedelta(hours=2)
+                tijdzone_correctie = datetime.strptime(tijd, "%H:%M:%S") + timedelta(hours=self.tijdcorrectie)
                 tijd = tijdzone_correctie.strftime("%H:%M:%S")
-                if tijd == True:
+                if tijdinrooster == True:
                     rooster += str(tijd) + '\n'
-                elif tijd == False:
+                elif tijdinrooster == False:
                     rooster += '\n'
             else:
                 continue
@@ -58,7 +62,7 @@ class magisteragenda():
                 _, tijd = datumtijd
                 tijd = str(tijd).split('+')
                 tijd, _ = tijd
-                tijdzone_correctie = datetime.strptime(tijd, "%H:%M:%S") + timedelta(hours=2)
+                tijdzone_correctie = datetime.strptime(tijd, "%H:%M:%S") + timedelta(hours=self.tijdcorrectie)
                 eersteuur = str(tijdzone_correctie.strftime("%H:%M:%S"))
                 i += 1 #zodat we alleen maar eerste uur van de dag pakken en niet de rest
             else:

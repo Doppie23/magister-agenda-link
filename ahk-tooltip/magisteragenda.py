@@ -42,8 +42,6 @@ class magisteragenda():
                 tijd = tijdzone_correctie.strftime("%H:%M:%S")
                 if tijdinrooster == True:
                     rooster += str(tijd) + '\n'
-                elif tijdinrooster == False:
-                    rooster += '\n'
             else:
                 continue
         rooster = rooster.strip()

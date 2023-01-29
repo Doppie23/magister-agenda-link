@@ -8,7 +8,7 @@ from magisteragenda import magisteragenda
 link = os.environ.get('link')
 agenda = magisteragenda(link, zomertijd=False)
 
-rooster = agenda.rooster(1, True)
+rooster = agenda.rooster(1, False)
 print(rooster)
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
